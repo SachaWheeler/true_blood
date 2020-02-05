@@ -20,6 +20,8 @@ video_dir = sys.argv[1]
 if os.path.isdir(video_dir):
     print(video_dir)
     matches_dir = video_dir + "/matches"
+    if not os.path.isdir(matches_dir):
+        oS.mkdir(matches_dir)
     for filename in sorted(glob.glob(video_dir + '/*.jpg')):
         # print(filename)
         head, tail = os.path.split(filename)
@@ -34,12 +36,14 @@ if os.path.isdir(video_dir):
             continue
 
         # iterate over each image
-        for encoded_image in encoded_images:
+        # for encoded_image in encoded_images:
             # match your image with the image and check if it matches
-            result = face_recognition.compare_faces(
-                [image_to_be_matched_encoded], encoded_image)
-            # check if it was a match
-            if result[0] == True:
-                print("Matched: %s against %s" % (image, filename))
-                shutil.copy(filename, matches_dir + "/" + tail)
+        result = face_recognition.compare_faces(
+            encoded_images,
+            image_to_be_matched_encoded,
+            tolerance=0.5)
+        # check if it was a match
+        if result[0] == True:
+            print("Matched: %s" % (filename))
+            shutil.copy(filename, matches_dir + "/" + tail)
 

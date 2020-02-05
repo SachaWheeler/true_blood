@@ -1,12 +1,12 @@
 #!/bin/bash
 for episode in video/*/*.mkv; do
-        echo $episode
+        echo "editing: $episode"
         directory=${episode%.*}
-        echo $directory
+        echo "dir: $directory"
 
         if [ ! -d "$directory" ]; then
                 mkdir "$directory"
-                scenedetect --input "$episode" --output "$directory"  detect-content save-images  split-video --high-quality
+                scenedetect --input "$episode" --output "$directory"  detect-content --min-scene-len 2s save-images  split-video --high-quality --copy
                 mkdir "$directory/matches"
         fi
 
