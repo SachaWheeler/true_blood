@@ -1,0 +1,41 @@
+# import the libraries
+import os
+import face_recognition
+import pprint
+import sys
+import glob
+
+# make a list of all the available images
+images = os.listdir('dataset')
+
+pprint.pprint(images)
+
+video_dir = sys.argv[1]
+if os.path.isdir(video_dir):
+    print(video_dir)
+    for filename in sorted(glob.glob(video_dir + '/*.jpg')):
+        print(filename)
+        # load your image
+        image_to_be_matched = face_recognition.load_image_file(filename)
+
+        # encoded the loaded image into a feature vector
+        try:
+            image_to_be_matched_encoded = face_recognition.face_encodings(
+                image_to_be_matched)[0]
+        except:
+            continue
+
+        # iterate over each image
+        for image in images:
+            # load the image
+            current_image = face_recognition.load_image_file("dataset/" + image)
+            # encode the loaded image into a feature vector
+            current_image_encoded = face_recognition.face_encodings(current_image)[0]
+            # match your image with the image and check if it matches
+            result = face_recognition.compare_faces(
+                [image_to_be_matched_encoded], current_image_encoded)
+            # check if it was a match
+            if result[0] == True:
+                print("Matched: %s against %s" % (image, filename))
+
+    exit(0)
