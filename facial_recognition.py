@@ -41,7 +41,7 @@ if os.path.isdir(video_dir):
         result = face_recognition.compare_faces(
             encoded_images,
             image_to_be_matched_encoded,
-            tolerance=0.5)
+            tolerance=0.58)
         # check if it was a match
         if result[0] == True:
             print("Matched: %s" % (filename))
