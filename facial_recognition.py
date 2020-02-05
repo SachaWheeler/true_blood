@@ -20,10 +20,8 @@ video_dir = sys.argv[1]
 if os.path.isdir(video_dir):
     print(video_dir)
     matches_dir = video_dir + "/matches"
-    if not os.path.isdir(matches_dir):
-        os.mkdir(matches_dir)
     for filename in sorted(glob.glob(video_dir + '/*.jpg')):
-        print(filename)
+        # print(filename)
         head, tail = os.path.split(filename)
         # load your image
         image_to_be_matched = face_recognition.load_image_file(filename)
