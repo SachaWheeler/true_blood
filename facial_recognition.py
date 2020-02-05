@@ -4,17 +4,27 @@ import face_recognition
 import pprint
 import sys
 import glob
+import shutil
 
 # make a list of all the available images
-images = os.listdir('dataset')
+encoded_images = []
+for image in glob.glob('dataset/*.jpeg'):
+    # load the image
+    current_image = face_recognition.load_image_file(image)
+    # encode the loaded image into a feature vector
+    current_image_encoded = face_recognition.face_encodings(current_image)[0]
+    encoded_images.append(current_image_encoded)
 
-pprint.pprint(images)
 
 video_dir = sys.argv[1]
 if os.path.isdir(video_dir):
     print(video_dir)
+    matches_dir = video_dir + "/matches"
+    if not os.path.isdir(matches_dir):
+        os.mkdir(matches_dir)
     for filename in sorted(glob.glob(video_dir + '/*.jpg')):
         print(filename)
+        head, tail = os.path.split(filename)
         # load your image
         image_to_be_matched = face_recognition.load_image_file(filename)
 
@@ -26,16 +36,12 @@ if os.path.isdir(video_dir):
             continue
 
         # iterate over each image
-        for image in images:
-            # load the image
-            current_image = face_recognition.load_image_file("dataset/" + image)
-            # encode the loaded image into a feature vector
-            current_image_encoded = face_recognition.face_encodings(current_image)[0]
+        for encoded_image in encoded_images:
             # match your image with the image and check if it matches
             result = face_recognition.compare_faces(
-                [image_to_be_matched_encoded], current_image_encoded)
+                [image_to_be_matched_encoded], encoded_image)
             # check if it was a match
             if result[0] == True:
                 print("Matched: %s against %s" % (image, filename))
+                shutil.copy(filename, matches_dir + "/" + tail)
 
-    exit(0)
