@@ -35,15 +35,13 @@ if os.path.isdir(video_dir):
         except:
             continue
 
-        # iterate over each image
-        # for encoded_image in encoded_images:
-            # match your image with the image and check if it matches
         result = face_recognition.compare_faces(
             encoded_images,
             image_to_be_matched_encoded,
             tolerance=0.58)
         # check if it was a match
         if result[0] == True:
+            # pprint.pprint(result)
             print("Matched: %s" % (filename))
             shutil.copy(filename, matches_dir + "/" + tail)
 
