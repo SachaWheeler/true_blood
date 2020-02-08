@@ -15,7 +15,6 @@ for episode in video/*/*.mkv; do
                         IFS='-' # space is set as delimiter
                         read -ra ADDR <<< "$match" # str is read into an array as tokens
                         scene="${ADDR[@]: -2: 1}"
-                        #echo $scene
 
                         scene_file="$directory/splits/$f-Scene-$scene.mp4"
                         echo $scene_file
