@@ -12,7 +12,7 @@ for episode in video/*/*.mkv; do
                 #echo "-- $f"
                 for match in "$directory"/matches/*.jpg; do
                         #echo "- $match"
-                        IFS='-' # space is set as delimiter
+                        IFS='-' # delimiter
                         read -ra ADDR <<< "$match" # str is read into an array as tokens
                         scene="${ADDR[@]: -2: 1}"
 
