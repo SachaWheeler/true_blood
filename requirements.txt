@@ -20,4 +20,4 @@ scenedetect==0.5.1.1
 scipy==1.4.1
 six==1.14.0
 tqdm==4.42.1
-urllib3==1.25.8
+urllib3==1.26.5
